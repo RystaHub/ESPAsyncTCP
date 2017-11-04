@@ -1,6 +1,8 @@
 # ESPAsyncTCP
 
-Async TCP Library for ESP8266 Arduino modified for use in [RYSTA.io](https://rysta.io/) devices.
+For ESP32 look [HERE](https://github.com/me-no-dev/AsyncTCP)
+
+[![Join the chat at https://gitter.im/me-no-dev/ESPAsyncWebServer](https://badges.gitter.im/me-no-dev/ESPAsyncWebServer.svg)](https://gitter.im/me-no-dev/ESPAsyncWebServer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This is a fully asynchronous TCP library, aimed at enabling trouble-free, multi-connection network environment for Espressif's ESP8266 MCUs.
 
