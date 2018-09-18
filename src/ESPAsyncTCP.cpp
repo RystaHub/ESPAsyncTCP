@@ -201,7 +201,8 @@ int8_t AsyncClient::abort(){
 }
 
 void AsyncClient::close(bool now){
-  tcp_recved(_pcb, _rx_ack_len);
+  if(_pcb)
+    tcp_recved(_pcb, _rx_ack_len);
   if(now)
     _close();
   else
@@ -366,10 +367,14 @@ void AsyncClient::_ssl_error(int8_t err){
 #endif
 
 err_t AsyncClient::_sent(tcp_pcb* pcb, uint16_t len) {
+#if ASYNC_TCP_SSL_ENABLED
+  if (_pcb_secure && !_handshake_done)
+    return ERR_OK;
+#endif
   _rx_last_packet = millis();
-  ASYNC_TCP_DEBUG("_sent: %u\n", len);
   _tx_unacked_len -= len;
   _tx_acked_len += len;
+  ASYNC_TCP_DEBUG("_sent: %u (%d %d)\n", len, _tx_unacked_len, _tx_acked_len);
   if(_tx_unacked_len == 0){
     _pcb_busy = false;
     if(_sent_cb)
@@ -395,7 +400,7 @@ err_t AsyncClient::_recv(tcp_pcb* pcb, pbuf* pb, err_t err) {
         ASYNC_TCP_DEBUG("_recv err: %d\n", read_bytes);
         _close();
       }
-      return read_bytes;
+      //return read_bytes;
     }
     return ERR_OK;
   }
